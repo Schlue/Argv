@@ -14,6 +14,8 @@ use \Horde_Argv_Option;
 
 class ExtendAddTypesTest extends TestCase
 {
+    private string $testPath;
+
     public function setUp(): void
     {
         parent::setUp();

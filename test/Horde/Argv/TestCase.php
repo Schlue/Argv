@@ -13,6 +13,8 @@ use \ReflectionClass;
 
 class TestCase extends PHPTestCase
 {
+    public $parser;
+
     public static function setUpBeforeClass(): void
     {
         setlocale(LC_ALL, 'C');

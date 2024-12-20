@@ -13,6 +13,10 @@ use Exception;
 
 class InterceptedException extends Exception
 {
+    public $error_message;
+    public $exit_message;
+    public $exit_status;
+
     public function __construct($error_message = null, $exit_status = null, $exit_message = null)
     {
         $this->error_message = $error_message;
