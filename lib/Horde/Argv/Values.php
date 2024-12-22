@@ -24,7 +24,8 @@
  * @copyright 2010-2017 Horde LLC
  * @license   http://www.horde.org/licenses/bsd BSD
  */
-class Horde_Argv_Values implements IteratorAggregate, ArrayAccess, Countable
+#[AllowDynamicProperties]
+ class Horde_Argv_Values implements IteratorAggregate, ArrayAccess, Countable
 {
     public function __construct($defaults = array())
     {
@@ -42,38 +43,32 @@ class Horde_Argv_Values implements IteratorAggregate, ArrayAccess, Countable
         return implode(', ', $str);
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetExists($attr)
+    public function offsetExists($attr): bool
     {
         return isset($this->$attr) && !is_null($this->$attr);
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetGet($attr)
+    public function offsetGet($attr): mixed
     {
         return $this->$attr;
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetSet($attr, $val)
+    public function offsetSet($attr, $val): void
     {
         $this->$attr = $val;
     }
 
-    #[\ReturnTypeWillChange]
-    public function offsetUnset($attr)
+    public function offsetUnset($attr): void
     {
         unset($this->$attr);
     }
 
-    #[\ReturnTypeWillChange]
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return new ArrayIterator(get_object_vars($this));
     }
 
-    #[\ReturnTypeWillChange]
-    public function count()
+    public function count(): int
     {
         return count(get_object_vars($this));
     }

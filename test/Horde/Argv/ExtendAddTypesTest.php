@@ -60,11 +60,14 @@ class ExtendAddTypesTest extends TestCase
 
     public function testFiletypeNotfile()
     {
-        $this->expectException('ReflectionException');
-        unlink($this->testPath);
-        mkdir($this->testPath);
-        $this->assertParseFail(array("--file", $this->testPath, "-afoo"),
+        if (class_exists('Horde_Argv_ExtendAddTypesTest_MyOption')) {
+            $this->expectException('InterceptedException');
+            unlink($this->testPath);
+            mkdir($this->testPath);
+            $this->assertParseFail(array("--file", $this->testPath, "-afoo"),
                                sprintf("%s: not a regular file", $this->testPath));
+        } else {
+            $this->markTestSkipped('Class Horde_Argv_ExtendAddTypesTest_MyOption doesnt exist.');
+        }
     }
-
 }

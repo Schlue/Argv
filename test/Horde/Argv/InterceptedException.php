@@ -24,7 +24,7 @@ class InterceptedException extends Exception
         $this->exit_message = $exit_message;
     }
 
-    public function __toString()
+    public function __toString():string
     {
         if ($this->error_message)
             return $this->error_message;
