@@ -24,61 +24,152 @@
  * @copyright 2010-2017 Horde LLC
  * @license   http://www.horde.org/licenses/bsd BSD
  */
-#[AllowDynamicProperties]
- class Horde_Argv_Values implements IteratorAggregate, ArrayAccess, Countable
+
+class Horde_Argv_Values implements IteratorAggregate, ArrayAccess, Countable
 {
-    public function __construct($defaults = array())
+    // Array to store the dynamic attributes
+    private $data = [];
+
+    /**
+     * Summary of __construct
+     * @param mixed $defaults
+     */
+    public function __construct($defaults = [])
     {
         foreach ($defaults as $attr => $val) {
-            $this->$attr = $val;
+            $this->data[$attr] = $val;
         }
     }
 
-    public function __toString()
+    /**
+     * __set: Set a value
+     * 
+     * @param string $attr The name of the attribute
+     * @param mixed $value The content of the attribute
+     */
+    public function __set($attr, $value): void
     {
-        $str = array();
-        foreach ($this as $attr => $val) {
+        $this->data[$attr] = $value;
+    }
+
+    /**
+     * __get: Returns a value of an attribute
+     * 
+     * @param string $attr The name of the attribute
+     * @return mixed       The value of the attribute
+     */
+    public function &__get($attr): mixed    
+    {
+        return $this->data[$attr];
+    }
+
+    /**
+     * __isset: check if an attribute is set
+     * 
+     * @param string $attr The name of the attribute
+     * @return bool        True, when the attribute exists/ is set else false
+     */
+    public function __isset($attr): bool
+    {
+        return isset($this->data[$attr]);
+    }
+    
+    /**
+     * __unset: removes a attribute
+     * 
+     * @param string $attr The name of the attribute
+     * @return void
+     */
+    public function __unset($attr): void
+    {
+        unset($this->data[$attr]);
+    }
+    
+    /**
+     * __toString: The whole content as a string
+     * 
+     * @return string The content as a string
+     */
+    public function __toString(): string
+    {
+        $str = [];
+        foreach ($this->data as $attr => $val) {
             $str[] = $attr . ': ' . (string)$val;
         }
         return implode(', ', $str);
     }
 
+    /**
+     * Summary of offsetExists
+     * @param mixed $attr
+     * @return bool
+     */
     public function offsetExists($attr): bool
     {
-        return isset($this->$attr) && !is_null($this->$attr);
+        return isset($this->data[$attr]) && !$this->data[$attr] === null;
     }
 
+    /**
+     * Summary of offsetGet
+     * @param mixed $attr
+     * @return mixed
+     */
     public function offsetGet($attr): mixed
     {
-        return $this->$attr;
+        return $this->data[$attr] ?? null;
     }
 
+    /**
+     * Summary of offsetSet
+     * @param mixed $attr
+     * @param mixed $val
+     * @return void
+     */
     public function offsetSet($attr, $val): void
     {
-        $this->$attr = $val;
+        $this->data[$attr] = $val;
     }
 
+    /**
+     * Summary of offsetUnset
+     * @param mixed $attr
+     * @return void
+     */
     public function offsetUnset($attr): void
     {
-        unset($this->$attr);
+        unset($this->data[$attr]);
     }
 
+    /**
+     * Summary of getIterator
+     * @return ArrayIterator
+     */
     public function getIterator(): ArrayIterator
     {
-        return new ArrayIterator(get_object_vars($this));
+        return new ArrayIterator($this->data);
     }
 
+    /**
+     * Summary of count
+     * @return int
+     */
     public function count(): int
     {
-        return count(get_object_vars($this));
+        return count(get_object_vars($this->data));
     }
 
-    public function ensureValue($attr, $value)
+    /**
+     * Summary of ensureValue
+     * @param mixed $attr
+     * @param mixed $value
+     * @return mixed
+     */
+    public function ensureValue($attr, $value): mixed
     {
-        if (is_null($this->$attr)) {
-            $this->$attr = $value;
+        if ($this->data[$attr] === null) {
+            $this->data[$attr] = $value;
         }
-        return $this->$attr;
+        return $this->data[$attr];
     }
 
 }
