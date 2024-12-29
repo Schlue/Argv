@@ -58,7 +58,7 @@ class Horde_Argv_Values implements IteratorAggregate, ArrayAccess, Countable
      * @param string $attr The name of the attribute
      * @return mixed       The value of the attribute
      */
-    public function &__get($attr): mixed    
+    public function &__get($attr)
     {
         return $this->data[$attr];
     }
@@ -114,7 +114,7 @@ class Horde_Argv_Values implements IteratorAggregate, ArrayAccess, Countable
      * @param mixed $attr
      * @return mixed
      */
-    public function offsetGet($attr): mixed
+    public function offsetGet($attr)
     {
         return $this->data[$attr] ?? null;
     }
@@ -164,7 +164,7 @@ class Horde_Argv_Values implements IteratorAggregate, ArrayAccess, Countable
      * @param mixed $value
      * @return mixed
      */
-    public function ensureValue($attr, $value): mixed
+    public function ensureValue($attr, $value)
     {
         if ($this->data[$attr] === null) {
             $this->data[$attr] = $value;

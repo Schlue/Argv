@@ -26,9 +26,9 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: ['ubuntu-20.04']
+        operating-system: ['ubuntu-20.04', 'ubuntu-latest']
         php-versions: ['7.4', '8.0', 'latest']
-        phpunit-versions: ['latest', '9.5']
+        phpunit-versions: ['9.5', 'latest']
     steps:
     - name: Setup github ssh key
       run:  mkdir -p ~/.ssh/ && ssh-keyscan -t rsa github.com > ~/.ssh/known_hosts
