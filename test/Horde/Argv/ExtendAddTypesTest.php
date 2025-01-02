@@ -19,9 +19,9 @@ class ExtendAddTypesTest extends TestCase
     public function setUp(): void
     {
         parent::setUp();
-        if (class_exists('Horde_Argv_ExtendAddTypesTest_MyOption')) {
+        if (class_exists('Horde\\Argv\\ExtendAddTypesTest\\MyOption')) {
             $this->parser = new InterceptingParser(array('usage' => Horde_Argv_Option::SUPPRESS_USAGE,
-                                                                    'optionClass' => 'Horde_Argv_ExtendAddTypesTest_MyOption'));
+                                                                    'optionClass' => 'Horde\\Argv\\ExtendAddTypesTest\\MyOption'));
             $this->parser->addOption("-a", null, array('type' => "string", 'dest' => "a"));
             $this->parser->addOption("-f", "--file", array('type' => "file", 'dest' => "file"));
         }
@@ -41,7 +41,7 @@ class ExtendAddTypesTest extends TestCase
 
     public function testFiletypeOk()
     {
-        if (class_exists('Horde_Argv_ExtendAddTypesTest_MyOption')) {
+        if (class_exists('Horde\\Argv\\ExtendAddTypesTest\\MyOption')) {
             touch($this->testPath);
             $this->assertParseOK(array("--file", $this->testPath, "-afoo"),
                                 array('file' => $this->testPath, 'a' => 'foo'),
@@ -54,14 +54,18 @@ class ExtendAddTypesTest extends TestCase
 
     public function testFiletypeNoexist()
     {
-        unlink($this->testPath);
-        $this->markTestIncomplete();
+        if (class_exists('Horde\\Argv\\ExtendAddTypesTest\\MyOption')) {
+            unlink($this->testPath);
+            $this->assertParseFail(array("--file", $this->testPath, "-afoo"),
+                               sprintf("%s: file does not exist", $this->testPath));
+        } else {
+            $this->markTestSkipped('Class Horde_Argv_ExtendAddTypesTest_MyOption doesnt exist.');
+        }
     }
 
     public function testFiletypeNotfile()
     {
-        if (class_exists('Horde_Argv_ExtendAddTypesTest_MyOption')) {
-            $this->expectException('InterceptedException');
+        if (class_exists('Horde\\Argv\\ExtendAddTypesTest\\MyOption')) {
             unlink($this->testPath);
             mkdir($this->testPath);
             $this->assertParseFail(array("--file", $this->testPath, "-afoo"),

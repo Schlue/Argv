@@ -31,9 +31,7 @@
         "horde/translation": "^3 || dev-FRAMEWORK_6_0",
         "horde/util": "^3 || dev-FRAMEWORK_6_0"
     },
-    "require-dev": {
-        "horde/test": "^3 || dev-FRAMEWORK_6_0"
-    },
+    "require-dev": { },
     "suggest": {
         "horde/test": "^3 || dev-FRAMEWORK_6_0"
     },
@@ -47,7 +45,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Horde\\Argv\\Test\\": "test/"
+            "Horde\\Argv\\": "test/Horde/Argv"
         }
     },
     "config": {
